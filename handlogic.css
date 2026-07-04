@@ -1058,6 +1058,10 @@
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
     /* ─── Responsive ──────────────────────────────────────── */
+    @media (max-width: 1150px) {
+      .nav-links { gap: 18px; }
+      nav .nav-cta { display: none; }
+    }
     @media (max-width: 860px) {
       nav { padding: 0 20px; }
       nav .nav-links { display: none; }
