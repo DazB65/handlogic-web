@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LogicTray — your inbox, quietly sorted. A Mac menu-bar mail companion.</title>
+  <meta name="description" content="LogicTray — a small, native macOS menu-bar app from HandLogic that triages your inbox with AI: it bundles similar mail, flags what needs a reply, and drafts responses in your voice. In development." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="LogicTray — your inbox, quietly sorted." />
+  <meta property="og:description" content="A native Mac menu-bar app that triages your mail with AI — bundles, needs-reply flags, and drafts in your voice. From HandLogic." />
+  <meta property="og:url" content="https://handlogic.io/logictray" />
+  <meta property="og:image" content="https://handlogic.io/logictray-og.png" />
+  <link rel="canonical" href="https://handlogic.io/logictray" />
+  <link rel="icon" href="icons/logictray-hand.png" />
+  <link rel="stylesheet" href="handlogic.css" />
+</head>
+<body>
+
+  <!-- ─── Nav ─────────────────────────────────────────────── -->
+  <nav>
+    <a href="logictray.html" class="nav-logo" style="font-weight:300;color:#B061D9;">
+      <img src="icons/logictray-hand.png" alt="" width="34" height="34" style="display:block;flex-shrink:0;" />
+      LogicTray
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">HandLogic</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="logicdesk.html">LogicDesk</a></li>
+      <li><a href="#notify" class="nav-cta">Get notified →</a></li>
+    </ul>
+  </nav>
+
+  <!-- in-dev note (prototype) -->
+  <p class="todo-ribbon">In development. Copy below is drafted from the app itself — give it a read and tweak the positioning/claims before launch. <strong>[TODO]</strong> marks the few facts only you can confirm.</p>
+
+  <!-- ─── Hero ─────────────────────────────────────────────── -->
+  <section class="hero" style="padding-top:72px;">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow">In development · coming soon</p>
+        <h1 style="color:#B061D9;">LogicTray <span class="for-mac">for Mac</span></h1>
+        <p class="hero-sub">Your inbox, quietly sorted.</p>
+        <p class="hero-desc"><strong style="font-weight:500;color:#B061D9">LogicTray</strong> lives in your menu bar and triages your mail with AI. It groups what's alike, surfaces only the threads that actually need you, and drafts replies in your own voice — so the inbox you open is already calm. You stay in control; it just clears the noise.</p>
+
+        <div class="hero-tools">
+          <span class="tool-pill"><span class="tool-pill-dot"></span>Smart bundles</span>
+          <span class="tool-pill"><span class="tool-pill-dot"></span>Needs-reply flags</span>
+          <span class="tool-pill"><span class="tool-pill-dot"></span>Drafts in your voice</span>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#notify" class="btn-primary">Get notified at launch →</a>
+        </div>
+        <p class="price-note">Native SwiftUI · macOS · from HandLogic Studio</p>
+      </div>
+
+      <div class="hero-right">
+        <img src="icons/logictray-hand.png" alt="LogicTray mark" class="hero-mark" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Tagline Strip ─────────────────────────────────────── -->
+  <div class="tagline-strip">
+    <div class="tagline-track" id="tagline-track"></div>
+  </div>
+
+  <!-- ─── How it works ──────────────────────────────────────── -->
+  <section id="how">
+    <div class="container">
+      <p class="section-label fade-up">How LogicTray works</p>
+      <h2 class="section-heading fade-up">Open the tray. Inbox already sorted.</h2>
+      <p class="section-sub fade-up">It syncs in the background and does the boring part for you — so the inbox you open is the one you'd have wanted.</p>
+
+      <div class="steps">
+        <div class="step fade-up">
+          <div class="step-number">1</div>
+          <h3>Connect your mail</h3>
+          <p>Sign in once with Gmail, or connect any standard IMAP account. <strong>[TODO: confirm the final list of supported providers.]</strong> Credentials stay on your Mac.</p>
+        </div>
+        <div class="step fade-up">
+          <div class="step-number">2</div>
+          <h3>It bundles &amp; flags</h3>
+          <p>LogicTray groups similar mail into tidy bundles and surfaces only the threads that genuinely need a reply. It even tells you how many it sorted — and how many it left for you.</p>
+        </div>
+        <div class="step fade-up">
+          <div class="step-number">3</div>
+          <h3>Reply in your voice</h3>
+          <p>For the threads that need you, it drafts a reply that sounds like you — learned from your own sent mail. Read it, tweak it, send it. Nothing leaves without your say-so.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Features ──────────────────────────────────────────── -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <p class="section-label fade-up">Features</p>
+      <h2 class="section-heading fade-up">Small. Quiet. On your side.</h2>
+      <p class="section-sub fade-up">Everything you need to keep an inbox calm. Nothing that gets in the way.</p>
+
+      <div class="features-grid fade-up">
+        <div class="feature-card">
+          <div class="feature-icon">🗂️</div>
+          <h3>Smart bundles</h3>
+          <p>Similar mail — receipts, newsletters, project threads — grouped automatically, so your inbox reads as a handful of piles instead of a wall of subjects.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Needs-reply, not noise</h3>
+          <p>LogicTray learns which threads actually need you and quietly holds back the rest — and when it's unsure, it leaves the thread for you rather than guessing.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✍️</div>
+          <h3>Drafts in your voice</h3>
+          <p>Replies are drafted from your own sent mail, so they sound like you — not a robot. Always your call before anything sends.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📬</div>
+          <h3>Real conversation threading</h3>
+          <p>Gmail and standard IMAP, with threads assembled across Inbox, Sent and Archive — open a conversation from anywhere and see all of it, not half of it.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🍎</div>
+          <h3>Native macOS — not Electron</h3>
+          <p>Built with SwiftUI. Lives in the menu bar, respects your system theme, launches fast and sips memory.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>No tracking. No ads.</h3>
+          <p>The HandLogic guarantee — no analytics SDKs, no telemetry, nothing sold. <strong>[TODO: confirm exactly where AI processing happens, so the data-handling claim is accurate.]</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Notify ────────────────────────────────────────────── -->
+  <section id="notify" class="pricing-section">
+    <div class="container">
+      <p class="section-label fade-up">Coming soon</p>
+      <h2 class="section-heading fade-up">Be first to know when LogicTray ships.</h2>
+      <p class="section-sub fade-up" style="margin:0 auto;">It's in active development. Leave your email and I'll tell you the moment it's on the Mac App Store. <strong>[TODO: wire up email capture (Resend) or point at the App Store page at launch.]</strong></p>
+      <div class="hero-actions fade-up" style="justify-content:center;margin-top:28px;">
+        <a href="mailto:hello@handlogic.io?subject=Notify%20me%20about%20LogicTray" class="btn-primary">Email me at launch →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────────────── -->
+  <footer>
+    <a href="index.html" class="footer-logo" style="color:#C9A258;">HandLogic</a>
+    <ul class="footer-links">
+      <li><a href="index.html">HandLogic</a></li>
+      <li><a href="logicdesk.html">LogicDesk</a></li>
+      <li><a href="logicvoice.html">LogicVoice</a></li>
+      <li><a href="logiccontent.html">LogicContent</a></li>
+      <li><a href="mailto:hello@handlogic.io">Support</a></li>
+      <li><a href="https://x.com/HandLogic">X / Twitter</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 HandLogic Studio</p>
+    <p class="footer-trademark">
+      HandLogic and LogicTray are trademarks of Darren Berich.
+      All other product names referenced on this site are trademarks or registered trademarks of their respective owners and are not affiliated with, nor do they endorse, HandLogic.
+    </p>
+  </footer>
+
+  <script>
+    const stripItems = [
+      "LogicTray — your inbox, quietly sorted",
+      "Bundles · Needs-reply · Drafts in your voice",
+      "Native SwiftUI · No tracking · No ads",
+      "Less inbox. More done.",
+      "From HandLogic Studio",
+    ];
+    const track = document.getElementById('tagline-track');
+    [...stripItems, ...stripItems].forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'tagline-item';
+      span.innerHTML = `<span>—</span>${t}`;
+      track.appendChild(span);
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up:not(.visible)').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LogicDesk — Four tiny tools. One quiet Mac window.</title>
+  <meta name="description" content="LogicDesk — Four tiny tools in one quiet Mac window. Instant AI answers, tasks, calendar, and quick capture. $4.99/mo. Native SwiftUI. No bloat." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="LogicDesk — Four tiny tools. One quiet Mac window." />
+  <meta property="og:description" content="Instant AI answers, tasks, calendar and quick capture. One quiet Mac window. $4.99/mo. Native SwiftUI — no bloat, no browser tabs, no lost flow." />
+  <meta property="og:url" content="https://handlogic.io/logicdesk" />
+  <meta property="og:image" content="https://handlogic.io/logicdesk-og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="LogicDesk — Four tiny tools, one quiet Mac window." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="LogicDesk — Four tiny tools. One quiet Mac window." />
+  <meta name="twitter:description" content="Instant AI answers, tasks, calendar and quick capture. One quiet Mac window. $4.99/mo." />
+  <meta name="twitter:image" content="https://handlogic.io/logicdesk-og.png" />
+  <link rel="canonical" href="https://handlogic.io/logicdesk" />
+
+  <style>
+    /* ─── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ─── Tokens ─────────────────────────────────────────── */
+    :root {
+      --accent:        #D4845A;
+      --accent-hover:  #C0724A;
+      --accent-bright: #EB7A45;
+      --primary:       #1A1208;
+      --secondary:     #8B7355;
+      --muted:         #B8A898;
+      --placeholder:   #C8B8A0;
+      --bg:            #F5F0E8;
+      --surface:       rgba(255,255,255,0.72);
+      --input-surface: rgba(255,255,255,0.55);
+      --divider:       rgba(0,0,0,0.06);
+      --border:        rgba(0,0,0,0.08);
+      --window-shadow: 0 32px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    /* ─── Base ────────────────────────────────────────────── */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+      background: var(--bg);
+      color: var(--primary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Nav ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 60px;
+      background: rgba(245,240,232,0.88);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 34px;
+      font-weight: 100;
+      color: var(--accent-bright);
+      letter-spacing: -0.03em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 15px;
+      color: var(--secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-weight: 500;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--accent-hover) !important; color: #fff !important; }
+
+    /* ─── Hero ────────────────────────────────────────────── */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: 0;
+      width: 700px; height: 700px;
+      background: radial-gradient(ellipse at center, rgba(212,132,90,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 64px;
+      align-items: center;
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .hero-eyebrow {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--secondary);
+      margin-bottom: 18px;
+      opacity: 0.85;
+    }
+    .for-mac { color: var(--primary); font-weight: 300; }
+
+    .hero h1 {
+      font-size: clamp(44px, 6.5vw, 80px);
+      font-weight: 300;
+      color: var(--accent-bright);
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+      margin-bottom: 14px;
+    }
+
+    .hero-sub {
+      font-size: clamp(20px, 2.6vw, 30px);
+      font-weight: 400;
+      color: var(--primary);
+      letter-spacing: -0.01em;
+      line-height: 1.18;
+      margin-bottom: 18px;
+    }
+
+    .hero-desc {
+      font-size: clamp(16px, 1.6vw, 18px);
+      font-weight: 400;
+      color: var(--secondary);
+      line-height: 1.65;
+      margin-bottom: 28px;
+      max-width: 480px;
+    }
+
+    .hero-tools {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .tool-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      background: rgba(212,132,90,0.1);
+      border: 1px solid rgba(212,132,90,0.22);
+      border-radius: 20px;
+      padding: 5px 12px;
+    }
+
+    .tool-pill-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+
+    .launch-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(212,132,90,0.12);
+      border: 1px solid rgba(212,132,90,0.3);
+      border-radius: 20px;
+      padding: 5px 14px;
+      margin-bottom: 16px;
+      letter-spacing: 0.01em;
+    }
+
+    .launch-badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse-dot 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.45; transform: scale(0.75); }
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(212,132,90,0.35);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(212,132,90,0.45);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .price-note {
+      font-size: 14px;
+      color: var(--placeholder);
+    }
+
+    /* ─── Hero right: app sidebar mockup ─────────────────── */
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ─── Sidebar mockup (hero) ───────────────────────────── */
+    .app-sidebar {
+      width: 320px;
+      height: 460px;
+      background: rgba(245,240,232,0.95);
+      border-radius: 14px;
+      box-shadow: var(--window-shadow), inset 0 0 0 0.5px rgba(255,255,255,0.6);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+      position: relative;
+    }
+
+    .sidebar-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 12px 6px;
+      flex-shrink: 0;
+    }
+
+    .tl { width: 10px; height: 10px; border-radius: 50%; }
+    .tl-r { background: #FF5F56; }
+    .tl-y { background: #FFBD2E; }
+    .tl-g { background: #27C93F; }
+
+    /* What panel in sidebar */
+    .sidebar-what {
+      padding: 6px 12px 8px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--divider);
+    }
+    .sw-question {
+      font-size: 11px;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+    .sw-answer {
+      font-size: 12px;
+      color: var(--primary);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .sw-input {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 7px;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 8px;
+    }
+    .sw-input-icon {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(212,132,90,0.15);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 9px;
+      color: var(--accent);
+    }
+    .sw-input-text { font-size: 12px; color: var(--placeholder); flex: 1; }
+    .sw-shortcuts {
+      display: flex; justify-content: space-between;
+      padding: 4px 0 0;
+      font-size: 10px; color: var(--muted);
+    }
+    .sc-key {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0 3px;
+      font-size: 9px;
+      color: var(--secondary);
+    }
+
+    /* Next panel */
+    .sidebar-next {
+      padding: 7px 12px 7px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--divider);
+    }
+    .panel-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--secondary);
+      padding: 2px 0;
+    }
+    .task-check {
+      width: 13px; height: 13px;
+      border: 1px solid rgba(0,0,0,0.18);
+      border-radius: 3px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.7);
+    }
+    .task-check.done {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .panel-footer {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* When panel */
+    .sidebar-when {
+      padding: 7px 12px 7px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--divider);
+    }
+    .when-date { font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+    .event-item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 12px;
+    }
+    .event-time { color: var(--muted); font-size: 11px; flex-shrink: 0; padding-top: 1px; }
+    .event-bar { width: 2px; background: var(--accent); border-radius: 2px; flex-shrink: 0; align-self: stretch; }
+    .event-title { color: var(--primary); }
+
+    /* Dump panel */
+    .sidebar-dump {
+      padding: 7px 12px 7px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .dump-content {
+      font-size: 12px;
+      color: var(--secondary);
+      line-height: 1.5;
+      flex: 1;
+    }
+    .dump-input {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 8px;
+    }
+    .dump-input-text { font-size: 12px; color: var(--placeholder); flex: 1; }
+
+    /* ─── Tagline strip ───────────────────────────────────── */
+    .tagline-strip {
+      padding: 36px 0;
+      overflow: hidden;
+      border-top: 1px solid var(--divider);
+      border-bottom: 1px solid var(--divider);
+      background: transparent;
+    }
+
+    .tagline-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 32s linear infinite;
+      width: max-content;
+    }
+    .tagline-track:hover { animation-play-state: paused; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .tagline-item {
+      white-space: nowrap;
+      padding: 0 18px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .tagline-item span { color: var(--accent); }
+
+    /* ─── Multi-window showcase ───────────────────────────── */
+    .showcase-section {
+      padding: 100px 24px;
+      background: rgba(255,255,255,0.3);
+      border-top: 1px solid var(--divider);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .showcase-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .showcase-stage {
+      position: relative;
+      height: 700px;
+      margin-top: 64px;
+    }
+
+    /* ── Sidebar (main window) ── */
+    .w-sidebar {
+      position: absolute;
+      right: 0; top: 0;
+      width: 270px;
+      height: 680px;
+      background: rgba(245,240,232,0.97);
+      border-radius: 14px;
+      box-shadow: var(--window-shadow), inset 0 0 0 0.5px rgba(255,255,255,0.6);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+    }
+
+    .w-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 9px 10px 5px;
+      flex-shrink: 0;
+    }
+    .w-tl { width: 9px; height: 9px; border-radius: 50%; }
+    .w-tl-r { background: #FF5F56; }
+    .w-tl-y { background: #FFBD2E; }
+    .w-tl-g { background: #27C93F; }
+
+    /* Sidebar panels */
+    .w-panel { padding: 6px 10px; border-bottom: 1px solid var(--divider); }
+    .w-panel:last-child { border-bottom: none; flex: 1; }
+
+    .w-panel-label { font-size: 12px; font-weight: 500; color: var(--accent); margin-bottom: 4px; }
+
+    .w-q { font-size: 10px; font-style: italic; color: var(--accent); margin-bottom: 3px; }
+    .w-a { font-size: 10.5px; color: var(--primary); line-height: 1.45;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+    .w-input {
+      display: flex; align-items: center; gap: 5px;
+      margin-top: 5px;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 4px 7px;
+    }
+    .w-input-icon {
+      width: 15px; height: 15px; border-radius: 50%;
+      background: rgba(212,132,90,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px; color: var(--accent); flex-shrink: 0;
+    }
+    .w-input-ph { font-size: 10px; color: var(--placeholder); }
+    .w-shortcuts { display: flex; justify-content: space-between; padding-top: 3px; font-size: 9px; color: var(--muted); }
+    .w-sc { background: rgba(255,255,255,0.7); border: 1px solid var(--border); border-radius: 2px; padding: 0 3px; font-size: 8px; color: var(--secondary); }
+
+    .w-task { display: flex; align-items: center; gap: 6px; padding: 2px 0; font-size: 10.5px; color: var(--secondary); }
+    .w-chk { width: 11px; height: 11px; border: 1px solid rgba(0,0,0,0.18); border-radius: 2px; background: rgba(255,255,255,0.7); flex-shrink: 0; }
+
+    .w-event { display: flex; gap: 6px; align-items: flex-start; }
+    .w-etime { font-size: 9.5px; color: var(--muted); flex-shrink: 0; padding-top: 1px; }
+    .w-ebar { width: 2px; background: var(--accent); border-radius: 2px; flex-shrink: 0; align-self: stretch; }
+    .w-etitle { font-size: 10.5px; color: var(--primary); }
+    .w-when-date { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+    .w-panel-footer { display: flex; justify-content: space-between; font-size: 9px; color: var(--muted); margin-top: 4px; }
+
+    .w-dump-content { font-size: 10.5px; color: var(--secondary); line-height: 1.5; }
+    .w-dump-input {
+      display: flex; align-items: center;
+      margin-top: 5px; padding: 4px 7px;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid var(--border); border-radius: 7px;
+    }
+    .w-dump-ph { font-size: 10px; color: var(--placeholder); }
+
+    /* ── Sidebar: brand header + panel chrome (latest app) ── */
+    .w-brand { display: flex; align-items: center; gap: 11px; padding: 2px 12px 12px; }
+    .w-mic {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid rgba(212,132,90,0.5);
+      background: rgba(212,132,90,0.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: var(--accent); flex-shrink: 0;
+    }
+    .w-brand-row { display: flex; align-items: center; gap: 7px; }
+    .w-brand-name { font-size: 23px; font-weight: 300; color: var(--accent); letter-spacing: -0.01em; }
+    .w-pro {
+      font-size: 9px; font-weight: 700; color: #fff; background: var(--accent);
+      padding: 2px 7px; border-radius: 999px; letter-spacing: 0.04em;
+    }
+    .w-brand-sub { font-size: 11px; color: var(--secondary); margin-top: 2px; }
+
+    .w-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .w-panel-meta { font-size: 9.5px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .w-nx-item { font-size: 11.5px; color: var(--primary); padding: 3px 0; }
+
+    .w-pill {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 8px;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--border); border-radius: 9px;
+      padding: 7px 8px 7px 11px;
+    }
+    .w-pill-ph { font-size: 11.5px; color: var(--placeholder); }
+    .w-pill-add {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: rgba(0,0,0,0.06); color: var(--muted);
+      display: flex; align-items: center; justify-content: center; font-size: 12px;
+    }
+    .w-foot-icons { display: flex; align-items: center; gap: 9px; font-size: 12px; color: var(--muted); }
+    .w-esub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .w-ebar-p { background: #B061D9; }
+
+    /* ── Answer popup ── */
+    .w-answer {
+      position: absolute;
+      left: 0; top: 0;
+      width: 360px;
+      z-index: 1;
+      background: rgba(245,240,232,0.97);
+      border-radius: 12px;
+      box-shadow: var(--window-shadow), inset 0 0 0 0.5px rgba(255,255,255,0.6);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .w-answer-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 12px 7px;
+      border-bottom: 1px solid var(--divider);
+    }
+    .w-answer-title { font-size: 14px; font-weight: 300; color: var(--accent); flex: 1; }
+    .w-icon-btn {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(200,184,160,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px; color: var(--secondary);
+    }
+
+    .w-answer-body { padding: 12px 14px; }
+    .w-answer-q { font-size: 12px; font-style: italic; color: var(--accent); margin-bottom: 9px; }
+    .w-answer-text {
+      font-size: 13px; color: var(--primary); line-height: 1.6;
+      display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .w-answer-actions {
+      display: flex; gap: 6px;
+      padding: 10px 14px 12px;
+      border-top: 1px solid var(--divider);
+    }
+    .w-action-btn {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+      font-size: 11.5px; color: var(--secondary);
+      padding: 5px 8px;
+      background: rgba(255,255,255,0.55);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 6px;
+    }
+
+    /* ── Dump popup ── */
+    .w-dump {
+      position: absolute;
+      left: 310px; bottom: 0;
+      width: 420px;
+      z-index: 5;
+      background: rgba(245,240,232,0.99);
+      border-radius: 14px;
+      box-shadow: var(--window-shadow), inset 0 0 0 0.5px rgba(255,255,255,0.6);
+      overflow: hidden;
+    }
+    .w-dump-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 16px 9px;
+      border-bottom: 1px solid var(--divider);
+    }
+    .w-dump-title { font-size: 17px; font-weight: 300; color: var(--accent); }
+    .w-dump-hdr-icons { display: flex; gap: 6px; }
+
+    .w-dump-form { padding: 14px 16px; display: flex; flex-direction: column; gap: 9px; }
+    .w-dump-field-label { font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+    .w-dump-field {
+      font-size: 14px; color: var(--primary);
+      background: rgba(255,255,255,0.65); border: 1px solid var(--border);
+      border-radius: 7px; padding: 7px 10px;
+    }
+    .w-dump-detail {
+      font-size: 14px; color: var(--placeholder);
+      background: rgba(255,255,255,0.65); border: 1px solid var(--border);
+      border-radius: 7px; padding: 7px 10px;
+      height: 64px;
+    }
+    .w-dump-form-actions {
+      display: flex; gap: 6px;
+      padding: 8px 12px;
+      border-top: 1px solid var(--divider);
+      justify-content: flex-end;
+    }
+    .w-dump-form-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px 13px;
+    }
+    .w-dump-cancel { font-size: 12.5px; color: var(--muted); }
+    .w-dump-save {
+      font-size: 12.5px; font-weight: 600; color: #fff;
+      background: var(--accent); border-radius: 7px;
+      padding: 6px 18px;
+    }
+
+    /* Unified card: Lives-in toggle + attachment sections */
+    .w-seg { display: inline-flex; gap: 5px; }
+    .w-seg-opt {
+      font-size: 12px; color: var(--secondary);
+      background: rgba(255,255,255,0.55);
+      border: 1px solid var(--border);
+      padding: 4px 14px; border-radius: 6px;
+    }
+    .w-seg-opt.active { background: #0A84FF; color: #fff; border-color: #0A84FF; font-weight: 500; }
+    .w-help { font-size: 11px; color: var(--placeholder); margin: 1px 0 5px; line-height: 1.35; }
+    .w-sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    .w-sec-btn {
+      font-size: 11px; color: var(--secondary);
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 3px 10px;
+    }
+    .w-link-row { display: flex; align-items: center; gap: 8px; }
+    .w-link-input {
+      flex: 1; font-size: 12.5px; color: var(--placeholder);
+      background: rgba(255,255,255,0.65); border: 1px solid var(--border);
+      border-radius: 7px; padding: 7px 10px;
+    }
+    .w-plus-btn {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(212,132,90,0.25); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .w-dropzone {
+      font-size: 11.5px; color: var(--placeholder); text-align: center;
+      background: rgba(255,255,255,0.5); border: 1px solid var(--border);
+      border-radius: 7px; padding: 13px 8px;
+    }
+    .w-dump-actions-row { display: flex; gap: 8px; padding: 10px 16px 0; }
+
+    /* ── When popup ── */
+    .w-when {
+      position: absolute;
+      left: 310px; bottom: 0;
+      width: 380px;
+      background: rgba(245,240,232,0.97);
+      border-radius: 12px;
+      box-shadow: var(--window-shadow), inset 0 0 0 0.5px rgba(255,255,255,0.6);
+      overflow: hidden;
+    }
+    .w-when-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 12px 7px;
+      border-bottom: 1px solid var(--divider);
+    }
+    .w-when-title { font-size: 14px; font-weight: 300; color: var(--accent); }
+    .w-when-tabs { display: flex; gap: 2px; }
+    .w-tab {
+      font-size: 10px; padding: 3px 8px; border-radius: 12px;
+      color: var(--secondary);
+    }
+    .w-tab.active { background: var(--accent); color: #fff; font-weight: 500; }
+    .w-when-icons { display: flex; gap: 5px; }
+
+    .w-cal { padding: 8px 12px; }
+    .w-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+    .w-cal-month { font-size: 12px; font-weight: 500; color: var(--primary); }
+    .w-cal-nav { font-size: 10px; color: var(--muted); }
+    .w-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .w-cal-day-name { font-size: 9px; color: var(--muted); text-align: center; padding: 2px 0; }
+    .w-cal-day {
+      font-size: 10px; text-align: center; padding: 3px;
+      color: var(--secondary); border-radius: 50%;
+      width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto;
+    }
+    .w-cal-day.today { background: var(--accent); color: #fff; font-weight: 600; }
+    .w-cal-day.empty { color: transparent; }
+
+    .w-when-events { padding: 6px 12px 10px; border-top: 1px solid var(--divider); }
+    .w-when-event-date { font-size: 10px; color: var(--accent); font-weight: 500; margin-bottom: 5px; }
+    .w-when-event-row { display: flex; gap: 7px; align-items: flex-start; margin-bottom: 4px; }
+    .w-when-event-time { font-size: 10px; color: var(--muted); flex-shrink: 0; }
+    .w-when-event-bar { width: 2px; background: var(--accent); border-radius: 2px; flex-shrink: 0; align-self: stretch; }
+    .w-when-event-name { font-size: 11px; color: var(--primary); }
+
+    .w-when-tasks { padding: 6px 12px 10px; border-top: 1px solid var(--divider); }
+    .w-when-tasks-label { font-size: 11px; font-weight: 500; color: var(--accent); margin-bottom: 5px; }
+    .w-when-task { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: var(--secondary); padding: 2px 0; }
+    .w-when-chk { width: 10px; height: 10px; border: 1px solid rgba(0,0,0,0.18); border-radius: 2px; background: rgba(255,255,255,0.7); flex-shrink: 0; }
+
+    /* ─── Section base ────────────────────────────────────── */
+    section {
+      padding: 100px 24px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-heading {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 200;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--secondary);
+      line-height: 1.6;
+      max-width: 520px;
+    }
+
+    /* ─── How it works ────────────────────────────────────── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 64px;
+    }
+
+    .step { display: flex; flex-direction: column; gap: 14px; }
+
+    .step-number {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 600;
+      color: var(--accent);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .step h3 { font-size: 17px; font-weight: 600; color: var(--primary); line-height: 1.3; }
+    .step p  { font-size: 16px; color: var(--secondary); line-height: 1.6; }
+
+    /* ─── Features ────────────────────────────────────────── */
+    .features-section {
+      background: rgba(255,255,255,0.35);
+      border-top: 1px solid var(--divider);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      margin-top: 64px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .feature-card {
+      background: var(--surface);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background 0.2s;
+    }
+    .feature-card:hover { background: rgba(255,255,255,0.85); }
+
+    .feature-icon {
+      font-size: 22px;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(212,132,90,0.1);
+      border-radius: 10px;
+    }
+
+    .feature-card h3 { font-size: 16px; font-weight: 600; color: var(--primary); }
+    .feature-card p  { font-size: 15px; color: var(--secondary); line-height: 1.6; }
+
+    /* ─── Pricing ─────────────────────────────────────────── */
+    .pricing-section { text-align: center; }
+
+    .pricing-card {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 56px;
+      margin-top: 48px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .price-display {
+      font-size: 52px;
+      font-weight: 100;
+      color: var(--accent-bright);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .price-period { font-size: 16px; color: var(--muted); margin-top: 4px; margin-bottom: 32px; }
+
+    .price-features {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .price-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      color: var(--secondary);
+    }
+
+    .price-features li::before {
+      content: '';
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7.5' fill='none' stroke='%23D4845A' stroke-width='1'/%3E%3Cpath d='M5 8l2 2 4-4' stroke='%23D4845A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    .pricing-cta {
+      display: block;
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(212,132,90,0.35);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .pricing-cta:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+    .pricing-cancel { font-size: 13px; color: var(--placeholder); margin-top: 12px; }
+
+    /* Two-tier pricing */
+    .pricing-grid {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 20px;
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+    .tier-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 32px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+      max-width: 350px;
+      width: 100%;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+    .tier-card.pro {
+      border-color: rgba(212,132,90,0.5);
+      border-width: 1.5px;
+      box-shadow: 0 12px 48px rgba(212,132,90,0.18);
+    }
+    .tier-badge {
+      align-self: flex-start;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(212,132,90,0.12);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+    .tier-card.pro .tier-badge { color: #fff; background: var(--accent); }
+    .tier-name { font-size: 16px; font-weight: 600; color: var(--primary); margin-bottom: 6px; }
+    .tier-price { display: flex; align-items: baseline; gap: 5px; margin-bottom: 24px; }
+    .tier-price .amt { font-size: 44px; font-weight: 200; color: var(--accent-bright); letter-spacing: -0.03em; line-height: 1; }
+    .tier-price .per { font-size: 14px; color: var(--muted); }
+    .tier-card .price-features { margin-bottom: 28px; }
+    .tier-card .pricing-cta { margin-top: auto; }
+    .pricing-cta.ghost {
+      background: rgba(212,132,90,0.12);
+      color: var(--accent);
+      box-shadow: none;
+    }
+    .pricing-cta.ghost:hover { background: rgba(212,132,90,0.2); }
+
+    /* ─── FAQ ──────────────────────────────────────────────── */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 48px;
+      margin-top: 56px;
+    }
+
+    .faq-item { display: flex; flex-direction: column; gap: 10px; }
+    .faq-item h3 { font-size: 17px; font-weight: 600; color: var(--primary); line-height: 1.35; }
+    .faq-item p  { font-size: 15px; color: var(--secondary); line-height: 1.65; }
+    .faq-item a  { color: var(--accent); text-decoration: none; }
+
+    /* ─── About ────────────────────────────────────────────── */
+    .about-section {
+      background: rgba(255,255,255,0.35);
+      border-top: 1px solid var(--divider);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .about-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+
+    .about-inner p {
+      font-size: 17px; color: var(--secondary); line-height: 1.7; margin-top: 16px;
+    }
+    .about-inner p + p { margin-top: 14px; }
+
+    .about-signature {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-top: 28px; font-size: 15px; color: var(--primary); font-weight: 500;
+    }
+
+    /* ─── Footer ──────────────────────────────────────────── */
+    footer {
+      padding: 40px 48px;
+      border-top: 1px solid var(--divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo { font-size: 20px; font-weight: 100; color: var(--accent-bright); text-decoration: none; }
+
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--secondary); }
+
+    .footer-copy { font-size: 14px; color: var(--placeholder); }
+
+    .footer-trademark {
+      flex-basis: 100%;
+      font-size: 11px;
+      color: var(--placeholder);
+      line-height: 1.55;
+      margin-top: 8px;
+      padding-top: 16px;
+      border-top: 1px solid var(--divider);
+    }
+
+    /* ─── Shared accent ───────────────────────────────────── */
+    .wq { color: var(--accent-bright); font-style: normal; }
+
+    .kbd {
+      display: inline-flex; align-items: center; gap: 2px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--border); border-radius: 5px;
+      padding: 1px 6px; font-size: 12px; color: var(--secondary);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    /* ─── Animations ──────────────────────────────────────── */
+    .fade-up {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── Responsive ──────────────────────────────────────── */
+    @media (max-width: 860px) {
+      nav { padding: 0 20px; }
+      nav .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-text { align-items: center; text-align: center; }
+      .hero-desc { text-align: left; }
+      .hero-tools { justify-content: center; }
+      .hero-actions { justify-content: center; }
+      .price-note { text-align: center; }
+      .steps { grid-template-columns: 1fr; gap: 32px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing-card { padding: 36px 28px; }
+      .faq-grid { grid-template-columns: 1fr; gap: 28px; }
+      .showcase-stage { height: auto; display: flex; flex-direction: column; gap: 20px; align-items: center; }
+      .w-sidebar { position: static; width: 280px; height: auto; }
+      .w-answer { position: static; width: 100%; max-width: 380px; }
+      .w-dump { position: static; width: 100%; max-width: 300px; }
+      .w-when { position: static; width: 100%; max-width: 340px; }
+      footer { flex-direction: column; align-items: flex-start; padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Nav ─────────────────────────────────────────────── -->
+  <nav>
+    <a href="logicdesk.html" class="nav-logo" style="color:#2B9FE0;">
+      <img src="icons/logicdesk-hand.png" alt="" width="36" height="36" style="border-radius:9px;display:block;flex-shrink:0;" />
+      LogicDesk
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">HandLogic</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#tools">The tools</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="https://apps.apple.com/app/id6761345967" class="nav-cta">Get on App Store →</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── Hero ─────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <!-- Left: text -->
+      <div class="hero-text">
+        <p class="hero-eyebrow">Now on the Mac App Store · formerly Quattro</p>
+        <h1 style="color:#2B9FE0;">LogicDesk <span class="for-mac">for Mac</span></h1>
+        <p class="hero-sub">Four tiny tools. One quiet window.</p>
+        <p class="hero-desc"><strong style="font-weight:500;color:#2B9FE0">LogicDesk</strong> lives quietly on your Mac. Hit a hotkey, ask anything, get a sharp answer. Track tasks. Check your calendar. Capture a thought — all without breaking your flow.</p>
+
+        <div class="hero-tools">
+          <span class="tool-pill"><span class="tool-pill-dot"></span>What? — AI answers</span>
+          <span class="tool-pill"><span class="tool-pill-dot"></span>Next. — tasks</span>
+          <span class="tool-pill"><span class="tool-pill-dot"></span>When. — calendar</span>
+          <span class="tool-pill"><span class="tool-pill-dot"></span>Dump. — quick notes</span>
+        </div>
+
+        <div class="hero-actions">
+          <a href="https://apps.apple.com/app/id6761345967" class="btn-primary">
+            Download on the App Store →
+          </a>
+        </div>
+        <p class="price-note">7 days free · then $4.99/mo · Cancel anytime · macOS 14+</p>
+      </div>
+
+      <!-- Right: animated sidebar mockup -->
+      <div class="hero-right">
+        <div class="app-sidebar">
+          <div class="sidebar-titlebar">
+            <div class="tl tl-r"></div>
+            <div class="tl tl-y"></div>
+            <div class="tl tl-g"></div>
+          </div>
+
+          <!-- What panel -->
+          <div class="sidebar-what">
+            <div class="sw-question" id="demo-question-sidebar">what is the speed of light?</div>
+            <div class="sw-answer" id="demo-answer-sidebar">The speed of light in a vacuum is exactly 299,792,458 m/s — a universal constant that defines the metre itself.</div>
+            <div class="sw-input">
+              <div class="sw-input-icon">✦</div>
+              <div class="sw-input-text" id="demo-input-sidebar">Ask anything...</div>
+            </div>
+            <div class="sw-shortcuts">
+              <span><span class="sc-key">⌘N</span> New</span>
+              <span>↵ to send</span>
+            </div>
+          </div>
+
+          <!-- Next panel -->
+          <div class="sidebar-next">
+            <div class="panel-label">Next.</div>
+            <div class="task-item"><div class="task-check"></div>Ship LogicDesk v1.1</div>
+            <div class="task-item"><div class="task-check"></div>Update App Store listing</div>
+            <div class="task-item"><div class="task-check"></div>Apple nomination</div>
+            <div class="panel-footer"><span>3 remaining</span><span>↵ to add</span></div>
+          </div>
+
+          <!-- When panel -->
+          <div class="sidebar-when">
+            <div class="panel-label">When.</div>
+            <div class="when-date">Sunday, 17 May</div>
+            <div class="event-item">
+              <div class="event-time">10:00</div>
+              <div class="event-bar"></div>
+              <div class="event-title">Lex — Darren</div>
+            </div>
+            <div class="panel-footer"><span>1 event</span><span>Today</span></div>
+          </div>
+
+          <!-- Dump panel -->
+          <div class="sidebar-dump">
+            <div class="panel-label">Dump.</div>
+            <div class="dump-content">LogicDesk is live. Update Railway env vars, Resend domain, and set up the redirect.</div>
+            <div class="dump-input">
+              <div class="dump-input-text">Dump it out...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── Tagline Strip ─────────────────────────────────────── -->
+  <div class="tagline-strip">
+    <div class="tagline-track" id="tagline-track"></div>
+  </div>
+
+  <!-- ─── Multi-window Showcase ─────────────────────────────── -->
+  <section class="showcase-section" id="tools">
+    <div class="showcase-inner">
+      <p class="section-label fade-up">All four tools</p>
+      <h2 class="section-heading fade-up">Everything you need. Nothing you don't.</h2>
+      <p class="section-sub fade-up">Ask in a focused window. Capture anything into one rich card — text, links, images, even a recording — then send it to <span class="wq">Next.</span> or <span class="wq">When.</span> Or keep it all tucked in the sidebar. Your call.</p>
+
+      <div class="showcase-stage fade-up visible">
+
+        <!-- Answer popup -->
+        <div class="w-answer">
+          <div class="w-answer-header">
+            <div class="w-answer-title">Answer.</div>
+            <div class="w-icon-btn">⊕</div>
+            <div class="w-icon-btn">📌</div>
+            <div class="w-icon-btn">✕</div>
+          </div>
+          <div class="w-answer-body">
+            <div class="w-answer-q">what is the speed of light?</div>
+            <div class="w-answer-text">The speed of light in a vacuum, a universal physical constant denoted as "c," is exactly 299,792,458 metres per second. This value is used in various aspects of physics, including Albert Einstein's theory of special relativity, where it represents the ultimate speed limit in the universe.<br><br>The metre is officially defined by the distance light travels in a vacuum during a time interval of 1/299,792,458 of a second. While light travels at this constant speed in a vacuum, its speed can decrease when it passes through different mediums like air or water.</div>
+          </div>
+          <div class="w-answer-actions">
+            <div class="w-action-btn">☰ Move to Next.</div>
+            <div class="w-action-btn">📅 Add to When.</div>
+          </div>
+        </div>
+
+        <!-- Container card (one rich card, lives in any tool) -->
+        <div class="w-dump">
+          <div class="w-dump-header">
+            <div class="w-dump-title">LogicDesk Review</div>
+            <div class="w-dump-hdr-icons">
+              <div class="w-icon-btn">📌</div>
+              <div class="w-icon-btn">✕</div>
+            </div>
+          </div>
+          <div class="w-dump-form">
+            <div>
+              <div class="w-dump-field-label">Heading</div>
+              <div class="w-dump-field">LogicDesk Review</div>
+            </div>
+            <div>
+              <div class="w-dump-field-label">Lives in</div>
+              <div class="w-seg">
+                <span class="w-seg-opt">Dump.</span>
+                <span class="w-seg-opt active">Next.</span>
+                <span class="w-seg-opt">When.</span>
+              </div>
+            </div>
+            <div>
+              <div class="w-dump-field-label">Detail</div>
+              <div class="w-dump-detail" style="color:var(--primary)">Check Apple for LogicDesk Upgrade approval</div>
+            </div>
+            <div>
+              <div class="w-dump-field-label">Links</div>
+              <div class="w-help">Paste a URL in Detail, or add one here.</div>
+              <div class="w-link-row">
+                <div class="w-link-input">https://example.com</div>
+                <div class="w-plus-btn">+</div>
+              </div>
+            </div>
+            <div>
+              <div class="w-sec-head">
+                <div class="w-dump-field-label" style="margin-bottom:0">Images</div>
+                <div class="w-sec-btn">🖼 Add</div>
+              </div>
+              <div class="w-dropzone">Drop images here, or add from files.</div>
+            </div>
+            <div>
+              <div class="w-sec-head">
+                <div class="w-dump-field-label" style="margin-bottom:0">Audio</div>
+                <div class="w-sec-btn">● Record</div>
+              </div>
+              <div class="w-help">Record audio into this container.</div>
+            </div>
+            <div>
+              <div class="w-dump-field-label">Files</div>
+              <div class="w-help">Markdown notes you create from recordings will appear here.</div>
+            </div>
+          </div>
+          <div class="w-dump-actions-row">
+            <div class="w-action-btn">☰ Move to Next.</div>
+            <div class="w-action-btn">📅 Add to When.</div>
+          </div>
+          <div class="w-dump-form-footer">
+            <span style="font-size:16px;color:var(--muted)">🗑</span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="w-dump-cancel">Cancel</span>
+              <span class="w-dump-save">Save</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar (main window, rightmost) -->
+        <div class="w-sidebar">
+          <div class="w-titlebar">
+            <div class="w-tl w-tl-r"></div>
+            <div class="w-tl w-tl-y"></div>
+            <div class="w-tl w-tl-g"></div>
+          </div>
+
+          <!-- Brand header -->
+          <div class="w-brand">
+            <div class="w-mic">🎙</div>
+            <div>
+              <div class="w-brand-row">
+                <span class="w-brand-name" style="color:#2B9FE0;">LogicDesk</span>
+                <span class="w-pro" style="background:#2B9FE0;">PRO</span>
+              </div>
+              <div class="w-brand-sub">4 tiny tools in one window.</div>
+            </div>
+          </div>
+
+          <!-- What -->
+          <div class="w-panel">
+            <div class="w-panel-label">What?</div>
+            <div class="w-q">what is the speed of light?</div>
+            <div class="w-a">The speed of light in a vacuum is exactly 299,792,458 m/s — the universe's ultimate speed limit.</div>
+            <div class="w-pill">
+              <span class="w-pill-ph">What?</span>
+              <span class="w-pill-add">+</span>
+            </div>
+            <div class="w-panel-footer" style="margin-top:6px">
+              <span class="w-foot-icons"><span>⚙</span><span>📌</span><span>📷</span></span>
+              <span>↵ to send</span>
+            </div>
+          </div>
+
+          <!-- Next -->
+          <div class="w-panel">
+            <div class="w-panel-head">
+              <span class="w-panel-label" style="margin-bottom:0">Next.</span>
+              <span class="w-panel-meta">16 done ⤢</span>
+            </div>
+            <div class="w-nx-item">LogicDesk Review</div>
+            <div class="w-nx-item">what is the speed of light</div>
+            <div class="w-pill">
+              <span class="w-pill-ph">What's next?</span>
+              <span class="w-pill-add">+</span>
+            </div>
+            <div class="w-panel-footer" style="margin-top:6px"><span>2 remaining</span><span>↵ to add</span></div>
+          </div>
+
+          <!-- When -->
+          <div class="w-panel">
+            <div class="w-panel-head">
+              <span class="w-panel-label" style="margin-bottom:0">When.</span>
+              <span class="w-panel-meta">⤢ + ‹ ›</span>
+            </div>
+            <div class="w-when-date">Friday 12 June</div>
+            <div class="w-event">
+              <div class="w-etime">8:00 pm<br>10:00 pm</div>
+              <div class="w-ebar w-ebar-p"></div>
+              <div>
+                <div class="w-etitle">Rd 15: Dolphins Vs Roosters</div>
+                <div class="w-esub">National Rugby League</div>
+              </div>
+            </div>
+            <div class="w-panel-footer"><span>1 item</span><span>Today</span></div>
+          </div>
+
+          <!-- Dump -->
+          <div class="w-panel">
+            <div class="w-panel-label">Dump.</div>
+            <div class="w-dump-content">Test</div>
+            <div class="w-pill">
+              <span class="w-pill-ph">Dump it out...</span>
+              <span class="w-pill-add">+</span>
+            </div>
+            <div class="w-panel-footer" style="margin-top:6px"><span>1 think</span><span>↵ to add</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── How it works ──────────────────────────────────────── -->
+  <section id="how">
+    <div class="container">
+      <p class="section-label fade-up">How LogicDesk works</p>
+      <h2 class="section-heading fade-up">Three keystrokes to an answer.</h2>
+      <p class="section-sub fade-up"><span class="wq">LogicDesk</span> lives quietly on your Mac. Summon it with a shortcut, ask anything, get a sharp answer. That's it.</p>
+
+      <div class="steps">
+        <div class="step fade-up">
+          <div class="step-number">1</div>
+          <h3>Hit your shortcut</h3>
+          <p>Press your custom hotkey from anywhere on your Mac. LogicDesk appears instantly — sidebar, centre screen, wherever you need it.</p>
+        </div>
+        <div class="step fade-up">
+          <div class="step-number">2</div>
+          <h3>Ask, check, capture</h3>
+          <p>Type a question in <span class="wq">What?</span>, tick off a task in <span class="wq">Next.</span>, glance at your day in <span class="wq">When.</span>, or dump a thought in <span class="wq">Dump.</span></p>
+        </div>
+        <div class="step fade-up">
+          <div class="step-number">3</div>
+          <h3>Done. Move on.</h3>
+          <p>Got what you needed. Dismiss LogicDesk, copy an answer, or promote it straight to your task list or calendar. You never left your flow.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Features ──────────────────────────────────────────── -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <p class="section-label fade-up">Features</p>
+      <h2 class="section-heading fade-up">Small. Sassy. Smart.</h2>
+      <p class="section-sub fade-up">Everything you need for a clear head. Nothing you don't.</p>
+
+      <div class="features-grid fade-up">
+
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3><span class="wq">What?</span> — instant AI answers</h3>
+          <p>Hit your shortcut, type a question, get a sharp one- or two-sentence reply. No browser tabs, no rabbit holes, no preamble. Pop the answer out, copy it, or send it straight to your task list.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <h3><span class="wq">Next.</span> — simple task list</h3>
+          <p>A clean checklist that sits beside your work. Tick things off without context-switching to a separate task app. Ask LogicDesk something? Move the answer directly to Next. in one click.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📅</div>
+          <h3><span class="wq">When.</span> — today at a glance</h3>
+          <p>Your calendar events for today, right there. Day, week, or month view. No more swiping over to Calendar.app every five minutes to check the next meeting.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3><span class="wq">Dump.</span> — frictionless capture</h3>
+          <p>A no-ceremony notes pad in the same window. Catch a thought, a link, a half-formed idea — without breaking flow or opening another app.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⌨️</div>
+          <h3>Custom keyboard shortcut</h3>
+          <p>Set any hotkey — <kbd class="kbd">⌥ Q</kbd>, <kbd class="kbd">⌘ Space</kbd>, whatever. Summon the whole window from anywhere without touching your mouse.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <h3>Customisable AI persona</h3>
+          <p>Not vibing with the default tone? Edit the system prompt in Settings to make <span class="wq">What?</span> respond exactly how you like — formal, casual, technical, blunt.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🍎</div>
+          <h3>Native macOS — not Electron</h3>
+          <p>Built with SwiftUI. Respects your system theme, uses native macOS materials and vibrancy. Feels right at home. Launches fast. Uses almost no memory.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>No tracking. No ads.</h3>
+          <p>Your questions stay between you and the AI. LogicDesk doesn't log, sell, or store your queries. No analytics SDKs. No telemetry. Clean conscience.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Pricing ────────────────────────────────────────────── -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <p class="section-label fade-up">Pricing</p>
+      <h2 class="section-heading fade-up">Two plans. One quiet window.</h2>
+      <p class="section-sub fade-up" style="margin: 0 auto;">Standard covers all four tools. Pro adds voice control and the smartest AI. Both start with a 7-day free trial — cancel any time.</p>
+
+      <div class="pricing-grid fade-up">
+
+        <!-- Standard -->
+        <div class="tier-card">
+          <span class="tier-badge">7-day free trial</span>
+          <div class="tier-name">Standard</div>
+          <div class="tier-price"><span class="amt">$4.99</span><span class="per">/ mo</span></div>
+          <ul class="price-features">
+            <li><span class="wq">What?</span> — AI answers</li>
+            <li>Fast responses</li>
+            <li>Auto-speak answers</li>
+            <li><span class="wq">Next.</span> — task manager</li>
+            <li><span class="wq">When.</span> — calendar events</li>
+            <li><span class="wq">Dump.</span> — quick capture</li>
+            <li>Screen context</li>
+          </ul>
+          <a href="https://apps.apple.com/app/id6761345967" class="pricing-cta ghost">Start free trial →</a>
+        </div>
+
+        <!-- Pro -->
+        <div class="tier-card pro">
+          <span class="tier-badge">7-day free trial</span>
+          <div class="tier-name">Pro</div>
+          <div class="tier-price"><span class="amt">$9.99</span><span class="per">/ mo</span></div>
+          <ul class="price-features">
+            <li>Everything in Standard</li>
+            <li>Voice control — talk to any tool</li>
+            <li>Smartest AI — advanced reasoning</li>
+            <li>Premium auto-speak answers</li>
+          </ul>
+          <a href="https://apps.apple.com/app/id6761345967" class="pricing-cta">Try Pro free →</a>
+        </div>
+
+      </div>
+
+      <p class="pricing-cancel fade-up" style="text-align:center;">7 days free · then $4.99 or $9.99/mo · Cancel any time · macOS 14 Sonoma or later</p>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ────────────────────────────────────────────────── -->
+  <section id="faq">
+    <div class="container">
+      <p class="section-label fade-up">Questions</p>
+      <h2 class="section-heading fade-up">Things people ask.</h2>
+      <p class="section-sub fade-up">Quick answers to the questions that come up most.</p>
+
+      <div class="faq-grid fade-up">
+        <div class="faq-item">
+          <h3>Which AI does LogicDesk use?</h3>
+          <p>Currently powered by Google Gemini 2.5 Flash. The model is chosen to balance speed and quality for short, sharp answers — no preamble, no padding.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Is my data sent anywhere or stored?</h3>
+          <p>Your questions are sent to the AI provider to generate an answer, then discarded. LogicDesk doesn't log them, sell them, or train on them. No analytics. No tracking. No ads.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does it work offline?</h3>
+          <p>The interface does. AI answers need a connection. <span class="wq">Next.</span>, <span class="wq">When.</span> and <span class="wq">Dump.</span> all work fully offline.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Will there be an iOS or iPad version?</h3>
+          <p>On the roadmap. The Mac is the primary surface for now — that's where the keyboard-first flow shines. An iPhone companion comes once the Mac app is humming.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What's coming next?</h3>
+          <p>A bigger update is in the oven for power users — same $4.99 subscription, much more capability. Subscribe via the App Store and you'll get every update as it ships.</p>
+        </div>
+        <div class="faq-item">
+          <h3>I used Quattro — is this the same app?</h3>
+          <p>Yes. LogicDesk is Quattro, renamed under the <span class="wq">HandLogic</span> studio brand. Same app, same subscription, same updates — just a clearer name. Existing subscribers keep everything.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How do I get support?</h3>
+          <p>Email <a href="mailto:hello@handlogic.io">hello@handlogic.io</a>. It's read by an actual human (the one who built the app), usually within a day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── About ──────────────────────────────────────────────── -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="about-inner">
+        <p class="section-label fade-up">Built by</p>
+        <h2 class="section-heading fade-up">An indie dev, a Mac, and one quiet idea.</h2>
+        <p class="fade-up">LogicDesk is the AI companion I wanted to use myself — small, fast, native, and quiet. No chat sidebar that won't go away. No agentic monster trying to run my life. Just four tiny tools sharing one window, the way Mac apps used to feel.</p>
+        <p class="fade-up">I shipped it from Brisbane, Australia. If you've got feedback, ideas, or you've spotted a bug — please tell me. This is v1.0; v1.1 is already brewing.</p>
+        <div class="about-signature fade-up">
+          <span>— Darren</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────────────── -->
+  <footer>
+    <a href="logicdesk.html" class="footer-logo" style="display:inline-flex;align-items:center;gap:8px;color:#2B9FE0;"><img src="icons/logicdesk-hand.png" alt="" width="22" height="22" style="border-radius:6px;" />LogicDesk</a>
+    <ul class="footer-links">
+      <li><a href="index.html">HandLogic</a></li>
+      <li><a href="logictray.html">LogicTray</a></li>
+      <li><a href="logicvoice.html">LogicVoice</a></li>
+      <li><a href="logiccontent.html">LogicContent</a></li>
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="mailto:hello@handlogic.io">Support</a></li>
+      <li><a href="https://x.com/HandLogic">X / Twitter</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 HandLogic Studio</p>
+    <p class="footer-trademark">
+      HandLogic, LogicDesk, What?, Next., When. and Dump. are trademarks of Darren Berich.
+      All other product names referenced on this site are trademarks or registered trademarks of their respective owners and are not affiliated with, nor do they endorse, HandLogic.
+    </p>
+  </footer>
+
+  <!-- ─── JS ───────────────────────────────────────────────────── -->
+  <script>
+
+    // ── Tagline strip ──────────────────────────────────────────
+    const stripItems = [
+      "LogicDesk — four tiny tools, one quiet Mac window",
+      "What? · Next. · When. · Dump.",
+      "Native SwiftUI · No tracking · No ads",
+      "Ask now. Know now.",
+      "Not a rabbit hole. Not 47 blue links.",
+      "Now live on the Mac App Store",
+      "$4.99/mo · 7 days free · Cancel any time",
+    ];
+    const track = document.getElementById('tagline-track');
+    const doubled = [...stripItems, ...stripItems];
+    doubled.forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'tagline-item';
+      span.innerHTML = `<span>—</span>${t}`;
+      track.appendChild(span);
+    });
+
+    // ── Hero sidebar demo: type → answer → loop ────────────────
+    const demos = [
+      {
+        q: "what is the speed of light?",
+        a: "The speed of light in a vacuum is exactly 299,792,458 m/s — the universe's ultimate speed limit, and the constant that defines the metre itself."
+      },
+      {
+        q: "why do I forget walking through a door",
+        a: "\"Doorway effect\" — your brain uses locations to partition memory. You literally filed the memory in the previous room."
+      },
+      {
+        q: "difference between affect and effect",
+        a: "Affect is usually a verb (to affect something). Effect is usually a noun (the effect of something). Affect = action; Effect = end result."
+      },
+    ];
+
+    let demoIdx = 0;
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    async function runHeroDemo() {
+      const { q, a } = demos[demoIdx % demos.length];
+      demoIdx++;
+
+      const inputEl = document.getElementById('demo-input-sidebar');
+      const qEl     = document.getElementById('demo-question-sidebar');
+      const aEl     = document.getElementById('demo-answer-sidebar');
+
+      // Reset
+      qEl.textContent = '';
+      aEl.textContent = '';
+      inputEl.textContent = 'Ask anything...';
+      inputEl.style.color = 'var(--placeholder)';
+
+      await sleep(2000);
+
+      // Type question into input
+      inputEl.style.color = 'var(--primary)';
+      for (let i = 0; i < q.length; i++) {
+        inputEl.textContent = q.slice(0, i + 1);
+        await sleep(36 + Math.random() * 40);
+      }
+
+      await sleep(400);
+
+      // Send — show question + stream answer
+      qEl.textContent = q;
+      inputEl.textContent = 'Ask anything...';
+      inputEl.style.color = 'var(--placeholder)';
+
+      await sleep(300);
+      for (let i = 0; i < a.length; i++) {
+        aEl.textContent = a.slice(0, i + 1);
+        await sleep(12 + Math.random() * 20);
+      }
+
+      await sleep(4000);
+      runHeroDemo();
+    }
+
+    runHeroDemo();
+
+    // ── Scroll fade-in ─────────────────────────────────────────
+    const fadeEls = document.querySelectorAll('.fade-up:not(.visible)');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    fadeEls.forEach(el => observer.observe(el));
+
+  </script>
+
+</body>
+</html>
